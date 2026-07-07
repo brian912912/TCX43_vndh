@@ -90,7 +90,12 @@ export default function AuthModal({
                 <div>
                   <div className="flex justify-between mb-2">
                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider">Mật Khẩu</label>
-                    <a href="#" className="text-xs font-bold text-emerald-600 hover:underline">Quên mật khẩu?</a>
+                    <button
+                      type="button"
+                      className="text-xs font-bold text-emerald-600 hover:underline"
+                    >
+                      Quên mật khẩu?
+                    </button>
                   </div>
                   <div className="relative">
                     <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
@@ -163,7 +168,7 @@ export default function AuthModal({
                     <select 
                       value={regData.role}
                       onChange={(e) => setRegData({...regData, role: e.target.value})}
-                      className="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition text-sm text-slate-600 font-bold bg-white"
+                      className="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition text-sm text-slate-600 font-bold"
                     >
                       <option value="traveler">Khách du lịch (Tìm kiếm bạn đồng hành)</option>
                       <option value="guide">Hướng dẫn viên bản địa (Đón khách/Dẫn tour)</option>

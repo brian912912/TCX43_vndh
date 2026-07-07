@@ -8,6 +8,8 @@ import AuthModal from './authmodel';
 import BookingModal from './bookingmodel';
 import GuideCard from './guidecart';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5003/api';
+
 export default function App() {
     const [guides, setGuides] = useState(INITIAL_GUIDES);
     const [searchQuery, setSearchQuery] = useState('');
@@ -38,6 +40,20 @@ export default function App() {
     // Trạng thái Đặt lịch (Booking)
     const [bookingGuide, setBookingGuide] = useState(null);
     const [bookingSuccess, setBookingSuccess] = useState(false);
+
+    useEffect(() => {
+      const savedUser = localStorage.getItem('tcx43_user');
+      const savedToken = localStorage.getItem('tcx43_token');
+
+      if (savedUser && savedToken) {
+        try {
+          setCurrentUser(JSON.parse(savedUser));
+        } catch {
+          localStorage.removeItem('tcx43_user');
+          localStorage.removeItem('tcx43_token');
+        }
+      }
+    }, []);
   
     // Bộ đếm đếm ngược cho OTP
     useEffect(() => {
@@ -96,81 +112,124 @@ export default function App() {
       setAlertMessage({ type: '', text: '' });
     };
   
-    // Giả lập Gửi OTP thông qua email
-    const handleSendOTP = (e) => {
+    const handleSendOTP = async (e) => {
       e.preventDefault();
       if (!regData.fullName || !regData.email || !regData.password) {
         setAlertMessage({ type: 'error', text: 'Vui lòng điền đầy đủ các trường thông tin đăng ký!' });
         return;
       }
+
       setIsLoading(true);
       setAlertMessage({ type: '', text: '' });
-  
-      // Giả lập cuộc gọi API
-      setTimeout(() => {
-        setIsLoading(false);
-        setRegisterStep('otp');
-        setOtpTimer(60); // 60 giây đếm ngược
-        setAlertMessage({ 
-          type: 'success', 
-          text: 'Mã OTP bí mật đã được gửi thành công đến hòm thư đăng ký của bạn. Vui lòng kiểm tra!' 
-        });
-      }, 1200);
-    };
-  
-    // Xác minh OTP để hoàn tất Đăng ký
-    const handleVerifyOTP = (e) => {
-      e.preventDefault();
-      if (otpInput === '123456') {
-        setIsLoading(true);
-        setAlertMessage({ type: '', text: '' });
-  
-        setTimeout(() => {
-          setIsLoading(false);
-          setCurrentUser({
+
+      try {
+        const response = await fetch(`${API_URL}/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
             name: regData.fullName,
             email: regData.email,
-            role: regData.role === 'guide' ? 'Hướng dẫn viên' : 'Khách du lịch',
-            avatar: regData.role === 'guide' 
-              ? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'
-              : 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150'
-          });
-          setAlertMessage({ type: 'success', text: 'Tuyệt vời! Bạn đã xác minh tài khoản thành công.' });
-          
-          setTimeout(() => {
-            closeAuthModal();
-            // Xoá trắng các form nhập liệu
-            setRegData({ fullName: '', email: '', password: '', role: 'traveler' });
-          }, 1500);
-        }, 1000);
-      } else {
-        setAlertMessage({ type: 'error', text: 'Mã xác thực không hợp lệ. Vui lòng kiểm tra lại mã thử nghiệm (123456)' });
+            password: regData.password,
+            role: regData.role === 'guide' ? 'Tour Guide' : 'Tourist'
+          })
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Đăng ký thất bại');
+        }
+
+        setRegisterStep('otp');
+        setOtpTimer(300);
+        setAlertMessage({ type: 'success', text: data.message || 'Mã OTP đã được gửi đến email của bạn.' });
+      } catch (error) {
+        setAlertMessage({ type: 'error', text: error.message });
+      } finally {
+        setIsLoading(false);
       }
     };
   
-    // Đăng nhập tài khoản
-    const handleLoginSubmit = (e) => {
+    const handleVerifyOTP = async (e) => {
+      e.preventDefault();
+      if (!otpInput) {
+        setAlertMessage({ type: 'error', text: 'Vui lòng nhập mã OTP.' });
+        return;
+      }
+
+      setIsLoading(true);
+      setAlertMessage({ type: '', text: '' });
+
+      try {
+        const response = await fetch(`${API_URL}/auth/verify-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: regData.email, otp: otpInput })
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Xác minh OTP thất bại');
+        }
+
+        localStorage.setItem('tcx43_token', data.token);
+        localStorage.setItem('tcx43_user', JSON.stringify(data.user));
+        setCurrentUser(data.user);
+        setAlertMessage({ type: 'success', text: 'Tài khoản đã được kích hoạt thành công.' });
+
+        setTimeout(() => {
+          closeAuthModal();
+          setRegData({ fullName: '', email: '', password: '', role: 'traveler' });
+          setOtpInput('');
+        }, 1000);
+      } catch (error) {
+        setAlertMessage({ type: 'error', text: error.message });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    const handleLoginSubmit = async (e) => {
       e.preventDefault();
       if (!loginEmail || !loginPassword) {
         setAlertMessage({ type: 'error', text: 'Vui lòng cung cấp cả địa chỉ email và mật khẩu.' });
         return;
       }
+
       setIsLoading(true);
       setAlertMessage({ type: '', text: '' });
-  
-      setTimeout(() => {
-        setIsLoading(false);
-        setCurrentUser({
-          name: "Nguyễn Huy Hoàng",
-          email: loginEmail,
-          role: "Khách du lịch",
-          avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150"
+
+      try {
+        const response = await fetch(`${API_URL}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: loginEmail, password: loginPassword })
         });
-        closeAuthModal();
-      }, 1000);
+
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Đăng nhập thất bại');
+        }
+
+        localStorage.setItem('tcx43_token', data.token);
+        localStorage.setItem('tcx43_user', JSON.stringify(data.user));
+        setCurrentUser(data.user);
+        setAlertMessage({ type: 'success', text: 'Đăng nhập thành công.' });
+
+        setTimeout(() => {
+          closeAuthModal();
+          setLoginEmail('');
+          setLoginPassword('');
+        }, 1000);
+      } catch (error) {
+        setAlertMessage({ type: 'error', text: error.message });
+      } finally {
+        setIsLoading(false);
+      }
     };
   
     const handleLogout = () => {
+      localStorage.removeItem('tcx43_token');
+      localStorage.removeItem('tcx43_user');
       setCurrentUser(null);
     };
   
