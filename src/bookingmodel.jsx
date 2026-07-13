@@ -1,6 +1,6 @@
 import { X, ShieldCheck, MapPin, Phone } from 'lucide-react';
 
-export default function BookingModal({ guide, onClose, onConfirm, bookingSuccess, isLoading }) {
+export default function BookingModal({ guide, onClose, onConfirm, bookingSuccess, isLoading, t }) {
     if (!guide) return null;
   
     return (
@@ -20,23 +20,23 @@ export default function BookingModal({ guide, onClose, onConfirm, bookingSuccess
                 <ShieldCheck size={36} />
               </div>
               <div className="space-y-2">
-                <h4 className="font-bold text-xl text-slate-800">Đặt Lịch Thành Công!</h4>
+                <h4 className="font-bold text-xl text-slate-800">{t.bookingSuccessTitle}</h4>
                 <p className="text-slate-500 text-sm leading-relaxed">
-                  Yêu cầu của bạn đã được gửi cho <strong>{guide.name}</strong>. Họ sẽ liên lạc lại với bạn thông qua số điện thoại đã đăng ký để thảo luận hành trình!
+                  {t.bookingSuccessDesc} <strong>{guide.name}</strong>. {t.bookingSuccessSub}
                 </p>
               </div>
               <button 
                 onClick={onClose} 
                 className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-2xl text-sm transition shadow-md"
               >
-                Hoàn thành
+                {t.bookingComplete}
               </button>
             </div>
           ) : (
             <form onSubmit={onConfirm} className="p-8 space-y-6">
               <div className="text-center space-y-2">
-                <h4 className="font-bold text-xl text-slate-800">Đăng Ký Đặt Lịch Hẹn</h4>
-                <p className="text-slate-500 text-sm">Trao đổi kinh nghiệm với chuyên gia bản địa.</p>
+                <h4 className="font-bold text-xl text-slate-800">{t.bookingTitle}</h4>
+                <p className="text-slate-500 text-sm">{t.bookingSubtitle}</p>
               </div>
   
               <div className="flex items-center gap-4 bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100/60">
@@ -51,7 +51,7 @@ export default function BookingModal({ guide, onClose, onConfirm, bookingSuccess
   
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Số Điện Thoại Liên Hệ</label>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">{t.bookingPhone}</label>
                   <div className="relative">
                     <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
                       <Phone size={14} />
@@ -67,7 +67,7 @@ export default function BookingModal({ guide, onClose, onConfirm, bookingSuccess
   
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Ngày Bắt Đầu</label>
+                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">{t.bookingStartDate}</label>
                     <input 
                       type="date" 
                       required 
@@ -75,7 +75,7 @@ export default function BookingModal({ guide, onClose, onConfirm, bookingSuccess
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Số Giờ Dự Kiến</label>
+                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">{t.bookingHours}</label>
                     <input 
                       type="number" 
                       min="1" 
@@ -88,7 +88,7 @@ export default function BookingModal({ guide, onClose, onConfirm, bookingSuccess
               </div>
   
               <div className="flex items-center justify-between border-t border-slate-100 pt-4 text-sm">
-                <span className="font-bold text-slate-400">Đơn giá cơ bản:</span>
+                <span className="font-bold text-slate-400">{t.bookingBasePrice}</span>
                 <span className="font-extrabold text-lg text-emerald-600">${guide.rate}/giờ</span>
               </div>
   
@@ -97,7 +97,7 @@ export default function BookingModal({ guide, onClose, onConfirm, bookingSuccess
                 disabled={isLoading}
                 className="w-full bg-emerald-500 hover:bg-emerald-600 disabled:bg-slate-300 text-white font-bold py-3.5 rounded-2xl transition shadow-lg"
               >
-                {isLoading ? 'Đang gửi yêu cầu đặt lịch...' : 'Xác Nhận Đặt Lịch'}
+                {isLoading ? 'Đang gửi yêu cầu đặt lịch...' : t.bookingConfirm}
               </button>
             </form>
           )}

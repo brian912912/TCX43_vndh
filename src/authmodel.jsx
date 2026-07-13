@@ -1,6 +1,7 @@
 import { X, CheckCircle, Mail, Lock, Clock } from 'lucide-react';
 
 export default function AuthModal({
+    t,
     isOpen, 
     onClose, 
     authTab, 
@@ -42,13 +43,13 @@ export default function AuthModal({
               onClick={() => { setAuthTab('login'); }}
               className={`py-4 text-center font-extrabold text-sm transition-all duration-200 ${authTab === 'login' ? 'bg-white text-emerald-600 border-b-2 border-emerald-500' : 'text-slate-400 hover:text-slate-600'}`}
             >
-              ĐĂNG NHẬP
+              {t.authLogin.toUpperCase()}
             </button>
             <button 
               onClick={() => { setAuthTab('register'); setRegisterStep('info'); }}
               className={`py-4 text-center font-extrabold text-sm transition-all duration-200 ${authTab === 'register' ? 'bg-white text-emerald-600 border-b-2 border-emerald-500' : 'text-slate-400 hover:text-slate-600'}`}
             >
-              ĐĂNG KÝ HỘI VIÊN
+              {t.authRegister.toUpperCase()}
             </button>
           </div>
   
@@ -71,7 +72,7 @@ export default function AuthModal({
             {authTab === 'login' && (
               <form onSubmit={onLoginSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Địa Chỉ Email</label>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">{t.authEmail}</label>
                   <div className="relative">
                     <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
                       <Mail size={16} />
@@ -89,12 +90,12 @@ export default function AuthModal({
   
                 <div>
                   <div className="flex justify-between mb-2">
-                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider">Mật Khẩu</label>
+                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider">{t.authPassword}</label>
                     <button
                       type="button"
                       className="text-xs font-bold text-emerald-600 hover:underline"
                     >
-                      Quên mật khẩu?
+                      {t.authForgot}
                     </button>
                   </div>
                   <div className="relative">
@@ -117,7 +118,7 @@ export default function AuthModal({
                   disabled={isLoading}
                   className="w-full bg-emerald-500 hover:bg-emerald-600 disabled:bg-slate-300 text-white font-bold py-3.5 px-4 rounded-2xl transition shadow-lg shadow-emerald-100 flex items-center justify-center gap-2"
                 >
-                  {isLoading ? 'Đang xác minh đăng nhập...' : 'Đăng nhập vào GF'}
+                  {isLoading ? 'Đang xác minh đăng nhập...' : t.authSubmitLogin}
                 </button>
               </form>
             )}
@@ -128,7 +129,7 @@ export default function AuthModal({
                 /* Bước 1: Điền thông tin cơ bản */
                 <form onSubmit={onSendOTP} className="space-y-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Họ và tên của bạn</label>
+                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">{t.authFullName}</label>
                     <input 
                       type="text" 
                       required 
@@ -140,7 +141,7 @@ export default function AuthModal({
                   </div>
   
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Địa Chỉ Email Nhận OTP</label>
+                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">{t.authEmailOtp}</label>
                     <input 
                       type="email" 
                       required 
@@ -152,7 +153,7 @@ export default function AuthModal({
                   </div>
   
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Mật Khẩu</label>
+                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">{t.authPassword}</label>
                     <input 
                       type="password" 
                       required 
@@ -164,14 +165,14 @@ export default function AuthModal({
                   </div>
   
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Bạn Tham Gia Với Vai Trò</label>
+                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">{t.authRoleLabel}</label>
                     <select 
                       value={regData.role}
                       onChange={(e) => setRegData({...regData, role: e.target.value})}
                       className="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition text-sm text-slate-600 font-bold"
                     >
-                      <option value="traveler">Khách du lịch (Tìm kiếm bạn đồng hành)</option>
-                      <option value="guide">Hướng dẫn viên bản địa (Đón khách/Dẫn tour)</option>
+                      <option value="traveler">{t.authRoleTraveler}</option>
+                      <option value="guide">{t.authRoleGuide}</option>
                     </select>
                   </div>
   
@@ -180,7 +181,7 @@ export default function AuthModal({
                     disabled={isLoading}
                     className="w-full bg-emerald-500 hover:bg-emerald-600 disabled:bg-slate-300 text-white font-bold py-3.5 px-4 rounded-2xl transition shadow-lg shadow-emerald-100 flex items-center justify-center gap-2"
                   >
-                    {isLoading ? 'Đang gửi mã OTP...' : 'Tiếp tục & Nhận OTP qua Email'}
+                    {isLoading ? 'Đang gửi mã OTP...' : t.authContinueOtp}
                   </button>
                 </form>
               ) : (
@@ -197,7 +198,7 @@ export default function AuthModal({
   
                   <div className="space-y-2">
                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider text-center">
-                      Nhập mã xác minh của bạn
+                      {t.authOtpTitle}
                     </label>
                     <input 
                       type="text" 
@@ -208,7 +209,7 @@ export default function AuthModal({
                       placeholder="000000" 
                       className="block w-full text-center text-3xl font-extrabold tracking-widest px-4 py-3 bg-slate-50 border-2 border-emerald-200 focus:border-emerald-500 rounded-2xl focus:outline-none transition"
                     />
-                    <p className="text-xs text-center text-slate-400 font-medium">Mã thử nghiệm trên môi trường Mockup: <span className="font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">123456</span></p>
+                    <p className="text-xs text-center text-slate-400 font-medium">{t.authOtpHint}: <span className="font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">123456</span></p>
                   </div>
   
                   <div className="flex items-center justify-between text-xs font-bold">
@@ -217,7 +218,7 @@ export default function AuthModal({
                       onClick={() => { setRegisterStep('info'); }}
                       className="text-slate-400 hover:text-slate-600 transition flex items-center gap-1"
                     >
-                      Sửa thông tin
+                      {t.authEditInfo}
                     </button>
                     
                     {otpTimer > 0 ? (
@@ -230,7 +231,7 @@ export default function AuthModal({
                         onClick={onSendOTP}
                         className="text-emerald-600 hover:underline transition"
                       >
-                        Gửi lại mã OTP mới
+                        {t.authResend}
                       </button>
                     )}
                   </div>
@@ -240,7 +241,7 @@ export default function AuthModal({
                     disabled={isLoading || otpInput.length < 6}
                     className="w-full bg-emerald-500 hover:bg-emerald-600 disabled:bg-slate-300 text-white font-bold py-3.5 px-4 rounded-2xl transition shadow-lg shadow-emerald-100 flex items-center justify-center gap-2"
                   >
-                    {isLoading ? 'Đang xác minh OTP...' : 'Xác thực tài khoản và Đăng ký'}
+                    {isLoading ? 'Đang xác minh OTP...' : t.authVerify}
                   </button>
                 </form>
               )

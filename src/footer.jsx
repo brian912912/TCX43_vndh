@@ -1,6 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 
-export default function Footer() {
+export default function Footer({ t }) {
     return (
       <footer className="bg-slate-900 text-slate-400 py-12 border-t border-slate-800 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -14,28 +14,28 @@ export default function Footer() {
             <p className="text-sm">Kiến tạo hành trình hạnh phúc, kết nối trải nghiệm văn hoá chân thực nhất toàn cầu.</p>
           </div>
           <div>
-            <h5 className="text-white font-bold mb-4 text-sm uppercase tracking-wider">Danh mục</h5>
+            <h5 className="text-white font-bold mb-4 text-sm uppercase tracking-wider">{t.footerCategory}</h5>
             <ul className="space-y-2 text-sm">
-              <li><a href="#guides-section" className="hover:text-white transition">Tìm bạn đồng hành</a></li>
-              <li><a href="#" className="hover:text-white transition">Văn hóa bản địa</a></li>
-              <li><a href="#" className="hover:text-white transition">Blog kinh nghiệm du lịch</a></li>
+              <li><a href="#guides-section" className="hover:text-white transition">{t.footerFindGuide}</a></li>
+              <li><a href="#" className="hover:text-white transition">{t.footerCulture}</a></li>
+              <li><a href="#" className="hover:text-white transition">{t.footerBlog}</a></li>
             </ul>
           </div>
           <div>
-            <h5 className="text-white font-bold mb-4 text-sm uppercase tracking-wider">GF Community</h5>
+            <h5 className="text-white font-bold mb-4 text-sm uppercase tracking-wider">{t.footerCommunity}</h5>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-white transition">Tuyển dụng hướng dẫn viên</a></li>
-              <li><a href="#" className="hover:text-white transition">Chính sách bảo mật</a></li>
-              <li><a href="#" className="hover:text-white transition">Điều khoản sử dụng</a></li>
+              <li><a href="#" className="hover:text-white transition">{t.footerRecruit}</a></li>
+              <li><a href="#" className="hover:text-white transition">{t.footerPrivacy}</a></li>
+              <li><a href="#" className="hover:text-white transition">{t.footerTerms}</a></li>
             </ul>
           </div>
           <div>
-            <h5 className="text-white font-bold mb-4 text-sm uppercase tracking-wider">Nhận tin tức ưu đãi</h5>
-            <p className="text-xs mb-4">Nhập email để cập nhật những chuyến hành trình hot nhất.</p>
+            <h5 className="text-white font-bold mb-4 text-sm uppercase tracking-wider">{t.footerNewsletter}</h5>
+            <p className="text-xs mb-4">{t.footerNewsletterDesc}</p>
             <div className="flex gap-2">
               <input 
                 type="email" 
-                placeholder="Email của bạn..." 
+                placeholder={t.footerEmailPlaceholder} 
                 className="bg-slate-800 text-white text-xs border-none rounded-xl px-3 py-2 w-full focus:ring-1 focus:ring-emerald-500" 
               />
               <button className="bg-emerald-500 text-white rounded-xl px-4 py-2 hover:bg-emerald-600 transition text-xs">

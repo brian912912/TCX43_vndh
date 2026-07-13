@@ -2,16 +2,91 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+@keyframes dropdown-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-5px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animated-dropdown {
+  animation: dropdown-appear 180ms ease-out;
+}
+
+.premium-search-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.premium-search-button:hover::before {
+  opacity: 1;
+}
+
+.premium-search-card {
+  transition: transform 300ms ease, box-shadow 300ms ease, background-color 300ms ease;
+}
+
+.premium-search-card:hover {
+  transform: scale(1.005);
+  box-shadow: 0 30px 90px rgba(16, 185, 129, 0.16);
+}
+
+.premium-column {
+  transition: background-color 300ms ease, box-shadow 300ms ease;
+}
+
+.premium-column.focused,
+.premium-column:hover {
+  background: #f1f9f6;
+}
+
+.premium-column.focused {
+  box-shadow: 0 0 0 3px rgba(0, 168, 119, 0.16);
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f1f9f6;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.tourguide-calendar .ant-picker-cell-selected .ant-picker-cell-inner,
+.tourguide-calendar .ant-picker-cell-range-start .ant-picker-cell-inner,
+.tourguide-calendar .ant-picker-cell-range-end .ant-picker-cell-inner {
+  background: #00a877 !important;
+  color: white !important;
+}
+
+.tourguide-calendar .ant-picker-header-view button,
+.tourguide-calendar .ant-picker-content th {
+  color: #112d32 !important;
+}
+
+.tourguide-calendar .ant-picker-header {
+  color: #112d32 !important;
+}
+
+.tourguide-calendar .ant-picker-cell:hover .ant-picker-cell-inner {
+  background: #effbf7 !important;
+  color: #00a877 !important;
 }
