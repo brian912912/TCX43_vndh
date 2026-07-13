@@ -49,7 +49,10 @@ export default function SearchFilterModal({ visible, onClose, searchQuery, t, lo
       onCancel={onClose}
       footer={
         <div className="flex gap-3 justify-end">
-          <Button onClick={onClose} style={{ borderRadius: '24px' }}>
+          <Button onClick={onClose} style={{ 
+            borderRadius: '24px',
+            height: '44px'
+          }}>
             Đóng
           </Button>
           <Button type="primary" style={{ 

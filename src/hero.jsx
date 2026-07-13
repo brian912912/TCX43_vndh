@@ -92,6 +92,10 @@ export default function Hero({ searchQuery, onSearchChange, selectedTag, onTagCl
                       className="w-full rounded-3xl border-none bg-transparent px-4 py-3 text-slate-700 font-semibold"
                       placeholder={[t.heroDateStart, t.heroDateEnd]}
                       dropdownClassName="animated-dropdown"
+                      picker="date"
+                      format="DD/MM/YYYY"
+                      showTime={false}
+                      renderExtraFooter={() => null}
                     />
                   </div>
 
